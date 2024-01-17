@@ -24,7 +24,7 @@ const PageHome: React.FC = () => {
         <Grid container spacing={2}>
           <Grid xs={6} md={8}>
             <Item color="primary">
-              <h1>Welcome to calendar-merge</h1>
+              <h1>Welcome to what-the-sort</h1>
             </Item>
           </Grid>
           <Grid xs={6} md={4}>
@@ -36,7 +36,9 @@ const PageHome: React.FC = () => {
             <Item>Todays date: {today}</Item>
           </Grid>
           <Grid xs={6} md={8}>
-            <Item></Item>
+            <Item>
+              Practice sorting stuff for whatever algorithm class you're in
+            </Item>
           </Grid>
         </Grid>
       </Box>
