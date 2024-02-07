@@ -21,25 +21,25 @@ const theme = responsiveFontSizes(
     },
     palette: {
       background: {
-        default: "#009900", //green
+        default: "#231942", // Russian Violet
       },
       primary: {
-        main: "#2B37D4", //indigo
+        main: "#5E548E", // Ultra Violet
       },
       secondary: {
-        main: "#E769A6", //pink
+        main: "#9F86C0", // African Violet
       },
       error: {
-        main: "#D72A2A", //red
+        main: "#BE95C4", // Lilac
       },
       warning: {
-        main: "#FC7B09", //orange
+        main: "#E0B1CB", // Pink Lavendar
       },
       info: {
-        main: "#6B7D6A", //gray
+        main: "#6B7D6A", // gray
       },
       success: {
-        main: "#09FE00", //green
+        main: "#339900", //green
       },
       text: {
         primary: "#000000", //black

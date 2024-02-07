@@ -9,11 +9,11 @@ import theme from "./theme/theme";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <Routes>
           <Route path="/" element={<PageHome />} />
-        </ThemeProvider>
-      </Routes>
+        </Routes>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }
