@@ -22,12 +22,17 @@ const theme = responsiveFontSizes(
     palette: {
       background: {
         default: "#231942", // Russian Violet
+        paper: "#EDEDE9",
       },
       primary: {
         main: "#5E548E", // Ultra Violet
+        dark: "#9F86C0",
+        light: "#BE95C4",
       },
       secondary: {
         main: "#9F86C0", // African Violet
+        dark: "#BE95C4", // Lilac
+        light: "#E0B1CB", // Pink Lavender
       },
       error: {
         main: "#BE95C4", // Lilac
@@ -42,8 +47,10 @@ const theme = responsiveFontSizes(
         main: "#339900", //green
       },
       text: {
-        primary: "#000000", //black
-        secondary: "#FFFFFF", //white
+        primary: "#201E1F", // real pleasant black
+        secondary: "#FEFFFE", // real pleasing white
+        third: "#F3E0EC", // light pink ish
+        disabled: "",
       },
     },
   })
