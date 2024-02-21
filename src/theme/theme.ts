@@ -21,18 +21,18 @@ const theme = responsiveFontSizes(
     },
     palette: {
       background: {
-        default: "#231942", // Russian Violet
-        paper: "#EDEDE9",
+        default: "#10002b", // blue
+        paper: "#e0aaff",
       },
       primary: {
-        main: "#5E548E", // Ultra Violet
-        dark: "#9F86C0",
-        light: "#BE95C4",
+        main: "#240046", // Baby Powder
+        dark: "#3c096c",
+        light: "#5a189a",
       },
       secondary: {
-        main: "#9F86C0", // African Violet
-        dark: "#BE95C4", // Lilac
-        light: "#E0B1CB", // Pink Lavender
+        main: "#7b2cbf", // Pink
+        dark: "#9d4edd", // Grey
+        light: "#c77dff", // Asparagus
       },
       error: {
         main: "#BE95C4", // Lilac

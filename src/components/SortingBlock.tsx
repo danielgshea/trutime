@@ -1,6 +1,11 @@
-import { Unstable_Grid2 as Grid, Paper, Typography } from "@mui/material";
+import {
+  Button,
+  Unstable_Grid2 as Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DndContext, UniqueIdentifier, closestCenter } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -9,18 +14,17 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableItem } from "./SortableItem";
 
-export const SortingBlock = () => {
+export const SortingBlock = (props: { values: number[]; onSort: string }) => {
   const theme = useTheme();
 
-  const [values, setValues] = useState<number[]>(
-    Array.from({ length: 20 }, (v, i) => i + 1)
-  );
+  const [values, setValues] = useState(props.values);
+
+  useEffect(() => {
+    setValues(props.values);
+  }, [props.values]);
 
   const handleDragEnd = (event: any) => {
-    console.log("drag end called");
     const { active, over } = event;
-    console.log("ACTIVE: " + active.id);
-    console.log("OVER: " + over.id);
 
     if (active.id !== over.id) {
       setValues((items) => {
@@ -33,24 +37,77 @@ export const SortingBlock = () => {
   };
 
   return (
-    <Grid
-      container
-      direction="row"
-      alignItems="flex-end"
-      width="100vw"
-      columns={100}
-    >
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext
-          items={values}
-          strategy={horizontalListSortingStrategy}
+    <>
+      <Grid
+        container
+        position="relative"
+        direction="row"
+        width="100%"
+        columns={values.length}
+      >
+        {/* {valuesStatic.map((value) => (
+        <Grid
+          border="1px solid white"
+          xs={1}
+          height="100%"
+          position="absolute"
+          top="0"
+          bottom="0"
         >
-          {values.map((value) => (
-            <SortableItem key={value} id={value} numVals={values.length} />
-          ))}
-        </SortableContext>
-      </DndContext>
-    </Grid>
+          {" "}
+          hello world
+        </Grid>
+      ))} */}
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={values}
+            strategy={horizontalListSortingStrategy}
+          >
+            {values.map((value) => (
+              <Grid
+                style={{
+                  display: "flex",
+                  borderLeft: "1px solid white",
+                }}
+                height="100%"
+                xs={1}
+                padding="0"
+                direction="row"
+                alignItems="flex-start"
+              >
+                <Typography
+                  color={theme.palette.text.secondary}
+                  alignSelf="flex-start"
+                  zIndex="12"
+                >
+                  {values.indexOf(value)}
+                </Typography>
+                <div
+                  style={{
+                    width: `${(98 * 1) / values.length}%`,
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    justifyContent: "center",
+                    position: "absolute",
+                    zIndex: "0",
+                  }}
+                >
+                  <SortableItem
+                    key={value}
+                    id={value}
+                    numVals={values.length}
+                  />
+                </div>
+              </Grid>
+            ))}
+          </SortableContext>
+        </DndContext>
+      </Grid>
+    </>
   );
 };
 

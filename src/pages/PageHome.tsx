@@ -1,13 +1,34 @@
-import React from "react";
-import { Unstable_Grid2 as Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Button, Unstable_Grid2 as Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import useTheme from "@mui/material/styles/useTheme";
 import { SortingBlock } from "../components/SortingBlock";
+import { SortTypeButtons } from "../components/SortTypeButtons";
 
 const PageHome: React.FC = () => {
   const theme = useTheme();
   const today = new Date().toLocaleDateString();
+
+  const handleShuffle = () => {
+    const shuffledValues = Array.from({ length: 10 }, (_, i) => i + 1).sort(
+      () => Math.random() - 0.5
+    );
+    setValues(shuffledValues);
+    console.log("SHUFFLE");
+  };
+
+  const [handleSort, setHandleSort] = useState("bogo");
+
+  const onSort = (
+    type: "bogo" | "bubble" | "selection" | "insertion" | "quick"
+  ) => {
+    setHandleSort(type);
+  };
+
+  const [values, setValues] = useState(
+    Array.from({ length: 10 }, (_, i) => i + 1)
+  );
 
   return (
     <Grid
@@ -26,7 +47,7 @@ const PageHome: React.FC = () => {
         xs={12}
         alignItems="center"
         height="auto"
-        bgcolor={theme.palette.primary.light}
+        bgcolor={theme.palette.background.default}
       >
         <Grid xs="auto">
           <Typography variant="h1" color={theme.palette.text.secondary}>
@@ -45,75 +66,11 @@ const PageHome: React.FC = () => {
         direction="row"
         justifyContent="space-between"
         alignItems="stretch"
-        bgcolor={theme.palette.secondary.main}
+        bgcolor={theme.palette.primary.dark}
         height="auto"
         xs={12}
       >
-        <Grid>
-          <Paper
-            style={{
-              backgroundColor: theme.palette.background.default,
-              padding: "10px",
-              margin: "10px",
-            }}
-          >
-            <Typography variant="body1" color={theme.palette.text.secondary}>
-              BOGO
-            </Typography>
-          </Paper>
-        </Grid>
-        <Grid>
-          <Paper
-            style={{
-              backgroundColor: theme.palette.background.default,
-              padding: "10px",
-              margin: "10px",
-            }}
-          >
-            <Typography variant="body1" color={theme.palette.text.secondary}>
-              Bubble Sort
-            </Typography>
-          </Paper>
-        </Grid>
-        <Grid>
-          <Paper
-            style={{
-              backgroundColor: theme.palette.background.default,
-              padding: "10px",
-              margin: "10px",
-            }}
-          >
-            <Typography variant="body1" color={theme.palette.text.secondary}>
-              Selection Sort
-            </Typography>
-          </Paper>
-        </Grid>
-        <Grid>
-          <Paper
-            style={{
-              backgroundColor: theme.palette.background.default,
-              padding: "10px",
-              margin: "10px",
-            }}
-          >
-            <Typography variant="body1" color={theme.palette.text.secondary}>
-              Insertion Sort
-            </Typography>
-          </Paper>
-        </Grid>
-        <Grid>
-          <Paper
-            style={{
-              backgroundColor: theme.palette.background.default,
-              padding: "10px",
-              margin: "10px",
-            }}
-          >
-            <Typography variant="body1" color={theme.palette.text.secondary}>
-              Quick Sort
-            </Typography>
-          </Paper>
-        </Grid>
+        <SortTypeButtons handleShuffle={handleShuffle} />
       </Grid>
       <Grid
         /* Grid for data */
@@ -123,7 +80,7 @@ const PageHome: React.FC = () => {
         height="750px"
         xs={12}
       >
-        <SortingBlock />
+        <SortingBlock values={values} onSort={handleSort} />
       </Grid>
     </Grid>
   );
