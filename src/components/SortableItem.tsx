@@ -80,7 +80,7 @@ export function SortableItem(props: { id: number; numVals: number }) {
   };
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
     cursor: "pointer",
     width: "100%",

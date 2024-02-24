@@ -49,7 +49,6 @@ const theme = responsiveFontSizes(
       text: {
         primary: "#201E1F", // real pleasant black
         secondary: "#FEFFFE", // real pleasing white
-        third: "#F3E0EC", // light pink ish
         disabled: "",
       },
     },

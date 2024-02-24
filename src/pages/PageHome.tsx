@@ -1,34 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Button, Unstable_Grid2 as Grid, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
+import React from "react";
+import { Unstable_Grid2 as Grid, Typography } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
 import { SortingBlock } from "../components/SortingBlock";
-import { SortTypeButtons } from "../components/SortTypeButtons";
 
 const PageHome: React.FC = () => {
   const theme = useTheme();
-  const today = new Date().toLocaleDateString();
-
-  const handleShuffle = () => {
-    const shuffledValues = Array.from({ length: 10 }, (_, i) => i + 1).sort(
-      () => Math.random() - 0.5
-    );
-    setValues(shuffledValues);
-    console.log("SHUFFLE");
-  };
-
-  const [handleSort, setHandleSort] = useState("bogo");
-
-  const onSort = (
-    type: "bogo" | "bubble" | "selection" | "insertion" | "quick"
-  ) => {
-    setHandleSort(type);
-  };
-
-  const [values, setValues] = useState(
-    Array.from({ length: 10 }, (_, i) => i + 1)
-  );
 
   return (
     <Grid
@@ -60,18 +36,7 @@ const PageHome: React.FC = () => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid
-        /* Grid for choose algorithm section */
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="stretch"
-        bgcolor={theme.palette.primary.dark}
-        height="auto"
-        xs={12}
-      >
-        <SortTypeButtons handleShuffle={handleShuffle} />
-      </Grid>
+
       <Grid
         /* Grid for data */
         container
@@ -80,7 +45,7 @@ const PageHome: React.FC = () => {
         height="750px"
         xs={12}
       >
-        <SortingBlock values={values} onSort={handleSort} />
+        <SortingBlock />
       </Grid>
     </Grid>
   );

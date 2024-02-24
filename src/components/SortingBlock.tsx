@@ -13,28 +13,103 @@ import {
   SortableContext,
 } from "@dnd-kit/sortable";
 import { SortableItem } from "./SortableItem";
+import { SortTypeButton } from "./SortTypeButton";
+import NumberInput from "./NumberInput";
+import { useFetcher } from "react-router-dom";
 
-export const SortingBlock = (props: { values: number[]; onSort: string }) => {
+export const SortingBlock = () => {
   const theme = useTheme();
 
-  const [values, setValues] = useState(props.values);
+  const [numVals, setNumVals] = useState(5);
 
-  useEffect(() => {
-    setValues(props.values);
-  }, [props.values]);
+  let values = Array.from({ length: numVals }, (_, i) => i + 1);
+
+  const [assignedValues, setAssignedValues] = useState(values);
+
+  const [sorting, isSorting] = useState(false);
+
+  const resetVals = () => {
+    values = Array.from({ length: numVals }, (_, i) => i + 1);
+    setAssignedValues(values);
+  };
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      setValues((items) => {
+      setAssignedValues((items) => {
         const activeIndex = items.indexOf(active.id);
         const overIndex = items.indexOf(over.id);
 
         return arrayMove(items, activeIndex, overIndex);
       });
+      values = assignedValues;
     }
   };
+
+  useEffect(() => {
+    values = assignedValues;
+  }, [assignedValues]);
+
+  // useEffect(() => {
+  //   setAssignedValues(values);
+  // }, [values]);
+
+  const isAscendingOrder = () => {
+    for (let i = 0; i < values.length - 1; i++) {
+      if (values[i] > values[i + 1]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  function handleShuffle() {
+    values = Array.from({ length: numVals }, (_, i) => i + 1).sort(
+      () => Math.random() - 0.5
+    );
+    setAssignedValues(values);
+  }
+
+  function timeout(delay: number) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
+
+  async function handleClickBogoSort() {
+    if (sorting) return;
+    isSorting(true);
+    let LIMIT = 100; // gotta set a limit because BOGO sort is either O(n) O(foreeeeeever)
+    let count = 0;
+    while (!isAscendingOrder() && count < LIMIT) {
+      count++;
+      await handleShuffle();
+      await timeout(100); // wait for visualization
+    }
+    console.log("bogo sort ran " + count + " times, limit was " + LIMIT + ".");
+    isSorting(false);
+  }
+
+  async function handleClickBubbleSort() {
+    if (sorting) return;
+    isSorting(true);
+    console.log("values before bubble sort: " + values);
+    let repeat = true;
+    while (repeat) {
+      repeat = false;
+      for (let i = 1; i < values.length; i++) {
+        await timeout(1000);
+        if (values[i] < values[i - 1]) {
+          let x = values[i - 1];
+          values[i - 1] = values[i];
+          values[i] = x;
+          setAssignedValues(values);
+          repeat = true;
+        }
+      }
+    }
+    console.log("values after bubble sort: " + values);
+    isSorting(false);
+  }
 
   return (
     <>
@@ -43,30 +118,87 @@ export const SortingBlock = (props: { values: number[]; onSort: string }) => {
         position="relative"
         direction="row"
         width="100%"
-        columns={values.length}
+        columns={assignedValues.length}
+        style={{ overflowX: "hidden", overflowY: "hidden" }}
       >
-        {/* {valuesStatic.map((value) => (
         <Grid
-          border="1px solid white"
-          xs={1}
-          height="100%"
-          position="absolute"
-          top="0"
-          bottom="0"
+          /* Grid for choose algorithm section */
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="stretch"
+          bgcolor={theme.palette.primary.dark}
+          height="auto"
+          xs={12}
         >
-          {" "}
-          hello world
+          <Grid>
+            <Grid>
+              <NumberInput value={numVals} setValue={setNumVals} />
+            </Grid>
+            <Button
+              style={{
+                backgroundColor: "red",
+                padding: "10px",
+                margin: "10px",
+              }}
+              onClick={handleShuffle}
+            >
+              <Typography variant="body1">SHUFFLE</Typography>
+            </Button>
+          </Grid>
+          <Grid>
+            <SortTypeButton
+              name="Reset Values"
+              disabled={sorting}
+              handleClick={() => resetVals()}
+            />
+          </Grid>
+          <Grid>
+            <SortTypeButton
+              name="BOGO SORT"
+              disabled={sorting}
+              handleClick={() => handleClickBogoSort()}
+            />
+          </Grid>
+          <Grid>
+            <SortTypeButton
+              name="Bubble Sort"
+              disabled={sorting}
+              handleClick={() => handleClickBubbleSort()}
+            />
+          </Grid>
+          <Grid>
+            <SortTypeButton
+              name="SELECTION SORT"
+              disabled={sorting}
+              handleClick={() => handleClickBogoSort()}
+            />
+          </Grid>
+          <Grid>
+            <SortTypeButton
+              name="INSERTION SORT"
+              disabled={sorting}
+              handleClick={() => handleClickBogoSort()}
+            />
+          </Grid>
+          <Grid>
+            <SortTypeButton
+              name="QUICK SORT"
+              disabled={sorting}
+              handleClick={() => handleClickBogoSort()}
+            />
+          </Grid>
         </Grid>
-      ))} */}
         <DndContext
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
+          autoScroll={false}
         >
           <SortableContext
-            items={values}
+            items={assignedValues}
             strategy={horizontalListSortingStrategy}
           >
-            {values.map((value) => (
+            {assignedValues.map((value) => (
               <Grid
                 style={{
                   display: "flex",
@@ -77,17 +209,18 @@ export const SortingBlock = (props: { values: number[]; onSort: string }) => {
                 padding="0"
                 direction="row"
                 alignItems="flex-start"
+                key={value}
               >
                 <Typography
                   color={theme.palette.text.secondary}
                   alignSelf="flex-start"
                   zIndex="12"
                 >
-                  {values.indexOf(value)}
+                  {assignedValues.indexOf(value)}
                 </Typography>
                 <div
                   style={{
-                    width: `${(98 * 1) / values.length}%`,
+                    width: `${(98 * 1) / assignedValues.length}%`,
                     height: "100%",
                     display: "flex",
                     alignItems: "flex-end",
@@ -99,7 +232,7 @@ export const SortingBlock = (props: { values: number[]; onSort: string }) => {
                   <SortableItem
                     key={value}
                     id={value}
-                    numVals={values.length}
+                    numVals={assignedValues.length}
                   />
                 </div>
               </Grid>
@@ -110,11 +243,3 @@ export const SortingBlock = (props: { values: number[]; onSort: string }) => {
     </>
   );
 };
-
-/*
-        {values.map((value) => (
-          <Grid xs={1} key={value.index}>
-            <Bar value={value} key={value.index} />
-          </Grid>
-        ))}
-*/
