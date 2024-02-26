@@ -10,11 +10,12 @@ const PageHome: React.FC = () => {
     <Grid
       /* Grid for whole page */
       container
+      className="eyore2"
       direction="column"
       justifyContent="flex-start"
       alignItems="center"
       bgcolor={theme.palette.background.default}
-      minHeight="100vh"
+      minHeight="auto"
     >
       <Grid
         /* Grid for header */

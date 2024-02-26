@@ -84,6 +84,10 @@ export function SortableItem(props: { id: number; numVals: number }) {
     transition,
     cursor: "pointer",
     width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-end",
   };
 
   const rgb: number[] = waveLengthToRGB(
@@ -94,7 +98,10 @@ export function SortableItem(props: { id: number; numVals: number }) {
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <div
         style={{
-          height: `${300 + props.id * (200 / props.numVals)}px`,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: `${(100 / props.numVals) * props.id}%`,
           width: "100%",
           background: `rgb(${rgb[0] / colorCoolFactor}, ${
             rgb[1] / colorCoolFactor

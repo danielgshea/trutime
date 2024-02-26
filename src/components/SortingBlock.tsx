@@ -85,29 +85,31 @@ export const SortingBlock = () => {
       await handleShuffle();
       await timeout(100); // wait for visualization
     }
-    console.log("bogo sort ran " + count + " times, limit was " + LIMIT + ".");
     isSorting(false);
+  }
+
+  async function swap(i1: number, i2: number) {
+    const temp = values[i1];
+    values[i1] = values[i2];
+    values[i2] = temp;
+    timeout(10);
+    setAssignedValues([...values]);
   }
 
   async function handleClickBubbleSort() {
     if (sorting) return;
     isSorting(true);
-    console.log("values before bubble sort: " + values);
     let repeat = true;
     while (repeat) {
       repeat = false;
       for (let i = 1; i < values.length; i++) {
-        await timeout(1000);
+        await timeout(10);
         if (values[i] < values[i - 1]) {
-          let x = values[i - 1];
-          values[i - 1] = values[i];
-          values[i] = x;
-          setAssignedValues(values);
+          await swap(i, i - 1);
           repeat = true;
         }
       }
     }
-    console.log("values after bubble sort: " + values);
     isSorting(false);
   }
 
@@ -118,8 +120,9 @@ export const SortingBlock = () => {
         position="relative"
         direction="row"
         width="100%"
-        columns={assignedValues.length}
-        style={{ overflowX: "hidden", overflowY: "hidden" }}
+        height="100%"
+        columns={numVals}
+        style={{ overflowX: "hidden" }}
       >
         <Grid
           /* Grid for choose algorithm section */
@@ -129,6 +132,7 @@ export const SortingBlock = () => {
           alignItems="stretch"
           bgcolor={theme.palette.primary.dark}
           height="auto"
+          width="100vw"
           xs={12}
         >
           <Grid>
@@ -189,56 +193,56 @@ export const SortingBlock = () => {
             />
           </Grid>
         </Grid>
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-          autoScroll={false}
-        >
-          <SortableContext
-            items={assignedValues}
-            strategy={horizontalListSortingStrategy}
+        <Grid container width="100vw" height="auto" className="eyore">
+          {/* Grid for sorting section */}
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+            autoScroll={false}
           >
-            {assignedValues.map((value) => (
-              <Grid
-                style={{
-                  display: "flex",
-                  borderLeft: "1px solid white",
-                }}
-                height="100%"
-                xs={1}
-                padding="0"
-                direction="row"
-                alignItems="flex-start"
-                key={value}
-              >
-                <Typography
-                  color={theme.palette.text.secondary}
-                  alignSelf="flex-start"
-                  zIndex="12"
-                >
-                  {assignedValues.indexOf(value)}
-                </Typography>
-                <div
+            <SortableContext
+              items={assignedValues}
+              strategy={horizontalListSortingStrategy}
+            >
+              {assignedValues.map((value) => (
+                <Grid
                   style={{
-                    width: `${(98 * 1) / assignedValues.length}%`,
-                    height: "100%",
                     display: "flex",
-                    alignItems: "flex-end",
-                    justifyContent: "center",
-                    position: "absolute",
-                    zIndex: "0",
+                    borderLeft: "1px solid white",
                   }}
+                  height="80%"
+                  xs={1}
+                  padding="0"
+                  direction="row"
+                  justifyContent="flex-start"
+                  key={value}
                 >
-                  <SortableItem
-                    key={value}
-                    id={value}
-                    numVals={assignedValues.length}
-                  />
-                </div>
-              </Grid>
-            ))}
-          </SortableContext>
-        </DndContext>
+                  <Typography
+                    color={theme.palette.text.secondary}
+                    alignSelf="flex-start"
+                    zIndex="12"
+                  >
+                    {assignedValues.indexOf(value)}
+                  </Typography>
+                  <div
+                    style={{
+                      width: `${(98 * 1) / numVals}%`,
+                      height: "80%",
+                      position: "absolute",
+                      zIndex: "0",
+                    }}
+                  >
+                    <SortableItem
+                      key={value}
+                      id={value}
+                      numVals={assignedValues.length}
+                    />
+                  </div>
+                </Grid>
+              ))}
+            </SortableContext>
+          </DndContext>
+        </Grid>
       </Grid>
     </>
   );
