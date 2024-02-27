@@ -1,6 +1,7 @@
 import {
   Button,
   Unstable_Grid2 as Grid,
+  Icon,
   Paper,
   Typography,
 } from "@mui/material";
@@ -14,21 +15,21 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableItem } from "./SortableItem";
 import { SortTypeButton } from "./SortTypeButton";
-import NumberInput from "./NumberInput";
-import { useFetcher } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 export const SortingBlock = () => {
   const theme = useTheme();
 
-  const [numVals, setNumVals] = useState(5);
+  const [numVals, setNumVals] = useState(12);
+
+  const [delay, setDelay] = useState(0);
 
   let values = Array.from({ length: numVals }, (_, i) => i + 1);
 
   const [assignedValues, setAssignedValues] = useState(values);
 
   const [sorting, isSorting] = useState(false);
-
-  const testBorder = "5px dashed green";
 
   const resetVals = () => {
     values = Array.from({ length: numVals }, (_, i) => i + 1);
@@ -85,16 +86,17 @@ export const SortingBlock = () => {
     while (!isAscendingOrder() && count < LIMIT) {
       count++;
       await handleShuffle();
-      await timeout(100); // wait for visualization
+      await timeout(delay); // wait for visualization
     }
     isSorting(false);
+    setAssignedValues(values);
   }
 
   async function swap(i1: number, i2: number) {
     const temp = values[i1];
     values[i1] = values[i2];
     values[i2] = temp;
-    timeout(10);
+    timeout(delay);
     setAssignedValues([...values]);
   }
 
@@ -105,7 +107,7 @@ export const SortingBlock = () => {
     while (repeat) {
       repeat = false;
       for (let i = 1; i < values.length; i++) {
-        await timeout(10);
+        await timeout(delay);
         if (values[i] < values[i - 1]) {
           await swap(i, i - 1);
           repeat = true;
@@ -123,7 +125,6 @@ export const SortingBlock = () => {
       width="100%"
       height="80vh"
       columns={numVals}
-      border={testBorder}
     >
       <Grid
         /* Grid for choose algorithm section */
@@ -136,10 +137,36 @@ export const SortingBlock = () => {
         width="100vw"
         xs={12}
       >
-        <Grid>
-          <Grid>
-            <NumberInput value={numVals} setValue={setNumVals} />
-          </Grid>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div>
+            <Button
+              style={{
+                backgroundColor: `${theme.palette.primary.light}`,
+                borderRadius: "20px",
+              }}
+              onClick={() => (numVals > 1 ? setNumVals(numVals - 1) : null)}
+            >
+              <RemoveIcon style={{ color: "white" }} />
+            </Button>
+          </div>
+          <div>
+            <Button
+              style={{
+                backgroundColor: `${theme.palette.primary.light}`,
+                borderRadius: "20px",
+              }}
+              onClick={() => (numVals > 1 ? setNumVals(numVals + 1) : null)}
+            >
+              <AddIcon style={{ color: "white" }} />
+            </Button>
+          </div>
+        </div>
+        <Grid display="flex" alignItems="center">
+          <Typography color={theme.palette.text.secondary}>
+            # Items: {numVals}
+          </Typography>
+        </Grid>
+        <Grid display="flex" alignItems="center">
           <Button
             style={{
               backgroundColor: "red",
@@ -151,42 +178,42 @@ export const SortingBlock = () => {
             <Typography variant="body1">SHUFFLE</Typography>
           </Button>
         </Grid>
-        <Grid>
+        <Grid display="flex" alignItems="center">
           <SortTypeButton
             name="Reset Values"
             disabled={sorting}
             handleClick={() => resetVals()}
           />
         </Grid>
-        <Grid>
+        <Grid display="flex" alignItems="center">
           <SortTypeButton
             name="BOGO SORT"
             disabled={sorting}
             handleClick={() => handleClickBogoSort()}
           />
         </Grid>
-        <Grid>
+        <Grid display="flex" alignItems="center">
           <SortTypeButton
             name="Bubble Sort"
             disabled={sorting}
             handleClick={() => handleClickBubbleSort()}
           />
         </Grid>
-        <Grid>
+        <Grid display="flex" alignItems="center">
           <SortTypeButton
             name="SELECTION SORT"
             disabled={sorting}
             handleClick={() => handleClickBogoSort()}
           />
         </Grid>
-        <Grid>
+        <Grid display="flex" alignItems="center">
           <SortTypeButton
             name="INSERTION SORT"
             disabled={sorting}
             handleClick={() => handleClickBogoSort()}
           />
         </Grid>
-        <Grid>
+        <Grid display="flex" alignItems="center">
           <SortTypeButton
             name="QUICK SORT"
             disabled={sorting}
