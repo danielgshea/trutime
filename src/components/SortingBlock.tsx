@@ -28,6 +28,8 @@ export const SortingBlock = () => {
 
   const [sorting, isSorting] = useState(false);
 
+  const testBorder = "5px dashed green";
+
   const resetVals = () => {
     values = Array.from({ length: numVals }, (_, i) => i + 1);
     setAssignedValues(values);
@@ -114,136 +116,134 @@ export const SortingBlock = () => {
   }
 
   return (
-    <>
+    <Grid
+      container
+      position="relative"
+      direction="row"
+      width="100%"
+      height="80vh"
+      columns={numVals}
+      border={testBorder}
+    >
       <Grid
+        /* Grid for choose algorithm section */
         container
-        position="relative"
         direction="row"
-        width="100%"
-        height="1000px"
-        columns={numVals}
+        justifyContent="space-between"
+        alignItems="stretch"
+        bgcolor={theme.palette.primary.dark}
+        height="20%"
+        width="100vw"
+        xs={12}
       >
-        <Grid
-          /* Grid for choose algorithm section */
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="stretch"
-          bgcolor={theme.palette.primary.dark}
-          height="20%"
-          width="100vw"
-          xs={12}
-        >
+        <Grid>
           <Grid>
-            <Grid>
-              <NumberInput value={numVals} setValue={setNumVals} />
-            </Grid>
-            <Button
-              style={{
-                backgroundColor: "red",
-                padding: "10px",
-                margin: "10px",
-              }}
-              onClick={handleShuffle}
-            >
-              <Typography variant="body1">SHUFFLE</Typography>
-            </Button>
+            <NumberInput value={numVals} setValue={setNumVals} />
           </Grid>
-          <Grid>
-            <SortTypeButton
-              name="Reset Values"
-              disabled={sorting}
-              handleClick={() => resetVals()}
-            />
-          </Grid>
-          <Grid>
-            <SortTypeButton
-              name="BOGO SORT"
-              disabled={sorting}
-              handleClick={() => handleClickBogoSort()}
-            />
-          </Grid>
-          <Grid>
-            <SortTypeButton
-              name="Bubble Sort"
-              disabled={sorting}
-              handleClick={() => handleClickBubbleSort()}
-            />
-          </Grid>
-          <Grid>
-            <SortTypeButton
-              name="SELECTION SORT"
-              disabled={sorting}
-              handleClick={() => handleClickBogoSort()}
-            />
-          </Grid>
-          <Grid>
-            <SortTypeButton
-              name="INSERTION SORT"
-              disabled={sorting}
-              handleClick={() => handleClickBogoSort()}
-            />
-          </Grid>
-          <Grid>
-            <SortTypeButton
-              name="QUICK SORT"
-              disabled={sorting}
-              handleClick={() => handleClickBogoSort()}
-            />
-          </Grid>
-        </Grid>
-        <Grid container width="100vw" height="80%" className="eyore">
-          {/* Grid for sorting section */}
-          <DndContext
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-            autoScroll={false}
+          <Button
+            style={{
+              backgroundColor: "red",
+              padding: "10px",
+              margin: "10px",
+            }}
+            onClick={handleShuffle}
           >
-            <SortableContext
-              items={assignedValues}
-              strategy={horizontalListSortingStrategy}
-            >
-              {assignedValues.map((value) => (
-                <Grid
-                  style={{
-                    display: "flex",
-                    borderLeft: "1px solid white",
-                  }}
-                  height="80%"
-                  xs={1}
-                  padding="0"
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="flex-start"
-                  key={value}
-                >
-                  <Typography
-                    color={theme.palette.text.secondary}
-                    alignSelf="flex-start"
-                    zIndex="12"
-                  >
-                    {assignedValues.indexOf(value)}
-                  </Typography>
-                  <div
-                    style={{
-                      width: `${(98 * 1) / numVals}%`,
-                      height: "100%",
-                      position: "absolute",
-                      zIndex: "0",
-                    }}
-                  >
-                    <SortableItem
-                      key={value}
-                      id={value}
-                      numVals={assignedValues.length}
-                    />
-                  </div>
-                </Grid>
-              ))}
-            </SortableContext>
-          </DndContext>
+            <Typography variant="body1">SHUFFLE</Typography>
+          </Button>
+        </Grid>
+        <Grid>
+          <SortTypeButton
+            name="Reset Values"
+            disabled={sorting}
+            handleClick={() => resetVals()}
+          />
+        </Grid>
+        <Grid>
+          <SortTypeButton
+            name="BOGO SORT"
+            disabled={sorting}
+            handleClick={() => handleClickBogoSort()}
+          />
+        </Grid>
+        <Grid>
+          <SortTypeButton
+            name="Bubble Sort"
+            disabled={sorting}
+            handleClick={() => handleClickBubbleSort()}
+          />
+        </Grid>
+        <Grid>
+          <SortTypeButton
+            name="SELECTION SORT"
+            disabled={sorting}
+            handleClick={() => handleClickBogoSort()}
+          />
+        </Grid>
+        <Grid>
+          <SortTypeButton
+            name="INSERTION SORT"
+            disabled={sorting}
+            handleClick={() => handleClickBogoSort()}
+          />
+        </Grid>
+        <Grid>
+          <SortTypeButton
+            name="QUICK SORT"
+            disabled={sorting}
+            handleClick={() => handleClickBogoSort()}
+          />
         </Grid>
       </Grid>
-    </>
+      <Grid container width="100vw" height="80%">
+        {/* Grid for sorting section */}
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          autoScroll={false}
+        >
+          <SortableContext
+            items={assignedValues}
+            strategy={horizontalListSortingStrategy}
+          >
+            {assignedValues.map((value) => (
+              <Grid
+                style={{
+                  display: "flex",
+                  borderLeft: "1px solid white",
+                }}
+                height="auto"
+                xs={1}
+                padding="0"
+                direction="row"
+                justifyContent="center"
+                alignItems="flex-start"
+                key={value}
+              >
+                <Typography
+                  color={theme.palette.text.secondary}
+                  alignSelf="flex-start"
+                  zIndex="12"
+                  position="absolute"
+                >
+                  {assignedValues.indexOf(value)}
+                </Typography>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <SortableItem
+                    key={value}
+                    id={value}
+                    numVals={assignedValues.length}
+                  />
+                </div>
+              </Grid>
+            ))}
+          </SortableContext>
+        </DndContext>
+      </Grid>
+    </Grid>
   );
 };

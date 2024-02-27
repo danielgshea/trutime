@@ -14,8 +14,7 @@ const PageHome = () => {
       justifyContent="flex-start"
       alignItems="center"
       bgcolor={theme.palette.background.default}
-      minHeight="auto"
-      height="auto"
+      minHeight="100vh"
     >
       <Grid
         /* Grid for header */
