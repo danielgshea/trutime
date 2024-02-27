@@ -3,19 +3,19 @@ import { Unstable_Grid2 as Grid, Typography } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
 import { SortingBlock } from "../components/SortingBlock";
 
-const PageHome: React.FC = () => {
+const PageHome = () => {
   const theme = useTheme();
 
   return (
     <Grid
       /* Grid for whole page */
       container
-      className="eyore2"
       direction="column"
       justifyContent="flex-start"
       alignItems="center"
       bgcolor={theme.palette.background.default}
       minHeight="auto"
+      height="auto"
     >
       <Grid
         /* Grid for header */
@@ -33,21 +33,11 @@ const PageHome: React.FC = () => {
         </Grid>
         <Grid xs="auto">
           <Typography variant="h5" color={theme.palette.text.secondary}>
-            for practicing sorting algorithms
+            live - laugh - sort
           </Typography>
         </Grid>
       </Grid>
-
-      <Grid
-        /* Grid for data */
-        container
-        bgcolor={theme.palette.background.default}
-        alignItems="stretch"
-        height="750px"
-        xs={12}
-      >
-        <SortingBlock />
-      </Grid>
+      <SortingBlock />
     </Grid>
   );
 };

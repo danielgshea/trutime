@@ -120,9 +120,8 @@ export const SortingBlock = () => {
         position="relative"
         direction="row"
         width="100%"
-        height="100%"
+        height="1000px"
         columns={numVals}
-        style={{ overflowX: "hidden" }}
       >
         <Grid
           /* Grid for choose algorithm section */
@@ -131,7 +130,7 @@ export const SortingBlock = () => {
           justifyContent="space-between"
           alignItems="stretch"
           bgcolor={theme.palette.primary.dark}
-          height="auto"
+          height="20%"
           width="100vw"
           xs={12}
         >
@@ -193,7 +192,7 @@ export const SortingBlock = () => {
             />
           </Grid>
         </Grid>
-        <Grid container width="100vw" height="auto" className="eyore">
+        <Grid container width="100vw" height="80%" className="eyore">
           {/* Grid for sorting section */}
           <DndContext
             collisionDetection={closestCenter}
@@ -214,7 +213,8 @@ export const SortingBlock = () => {
                   xs={1}
                   padding="0"
                   direction="row"
-                  justifyContent="flex-start"
+                  justifyContent="center"
+                  alignItems="flex-start"
                   key={value}
                 >
                   <Typography
@@ -227,7 +227,7 @@ export const SortingBlock = () => {
                   <div
                     style={{
                       width: `${(98 * 1) / numVals}%`,
-                      height: "80%",
+                      height: "100%",
                       position: "absolute",
                       zIndex: "0",
                     }}
